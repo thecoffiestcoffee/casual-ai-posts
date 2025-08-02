@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Work Timer</title>
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+            color: white;
+        }
+
+        .timer-container {
+            text-align: center;
+            background: rgba(52, 152, 219, 0.15);
+            padding: 40px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(30, 144, 255, 0.3);
+            border: 1px solid rgba(135, 206, 250, 0.2);
+        }
+
+        .timer-display {
+            font-size: 4rem;
+            font-weight: bold;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            letter-spacing: 4px;
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        button {
+            padding: 15px 25px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .play-btn {
+            background: #1e88e5;
+            color: white;
+        }
+
+        .play-btn:hover {
+            background: #2196f3;
+            transform: translateY(-2px);
+        }
+
+        .pause-btn {
+            background: #5e72e4;
+            color: white;
+        }
+
+        .pause-btn:hover {
+            background: #7986cb;
+            transform: translateY(-2px);
+        }
+
+        .stop-btn {
+            background: #3f51b5;
+            color: white;
+        }
+
+        .stop-btn:hover {
+            background: #5c6bc0;
+            transform: translateY(-2px);
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .status {
+            margin-top: 20px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .running { color: #64b5f6; }
+        .paused { color: #9fa8da; }
+        .stopped { color: #90caf9; }
+
+        .results-screen {
+            display: none;
+            text-align: center;
+            background: rgba(52, 152, 219, 0.15);
+            padding: 40px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(30, 144, 255, 0.3);
+            border: 1px solid rgba(135, 206, 250, 0.2);
+        }
+
+        .results-title {
+            font-size: 1.2rem;
+            font-weight: normal;
+            margin-bottom: 15px;
+            color: #b3d9ff;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .results-time {
+            font-size: 4rem;
+            font-weight: bold;
+            margin-bottom: 30px;
+            color: #e6f3ff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            line-height: 1.2;
+        }
+
+        .new-timer-btn {
+            background: rgba(30, 136, 229, 0.7);
+            color: white;
+            padding: 8px 16px;
+            font-size: 0.9rem;
+            font-weight: normal;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 10px;
+        }
+
+        .new-timer-btn:hover {
+            background: rgba(33, 150, 243, 0.8);
+            transform: translateY(-1px);
+        }
+    </style>
+</head>
+<body>
+    <div class="timer-container" id="timerScreen">
+        <div class="timer-display" id="timeDisplay">00:00:00</div>
+        <div class="controls">
+            <button class="play-btn" id="playBtn" onclick="startTimer()">▶ Start</button>
+            <button class="pause-btn" id="pauseBtn" onclick="pauseTimer()" disabled>⏸ Pause</button>
+            <button class="stop-btn" id="stopBtn" onclick="stopTimer()" disabled>⏹ Stop</button>
+        </div>
+        <div class="status stopped" id="status">Stopped</div>
+    </div>
+
+    <div class="results-screen" id="resultsScreen">
+        <div class="results-time" id="resultsTime"></div>
+        <div class="results-title">Session Complete</div>
+        <button class="new-timer-btn" onclick="newTimer()">Start New Timer</button>
+    </div>
+
+    <script>
+        let startTime = 0;
+        let elapsedTime = 0;
+        let timerInterval = null;
+        let isRunning = false;
+
+        const timeDisplay = document.getElementById('timeDisplay');
+        const playBtn = document.getElementById('playBtn');
+        const pauseBtn = document.getElementById('pauseBtn');
+        const stopBtn = document.getElementById('stopBtn');
+        const status = document.getElementById('status');
+        const timerScreen = document.getElementById('timerScreen');
+        const resultsScreen = document.getElementById('resultsScreen');
+        const resultsTime = document.getElementById('resultsTime');
+
+        function formatTime(milliseconds) {
+            const totalSeconds = Math.floor(milliseconds / 1000);
+            const hours = Math.floor(totalSeconds / 3600);
+            const minutes = Math.floor((totalSeconds % 3600) / 60);
+            const seconds = totalSeconds % 60;
+
+            return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        function formatTimeMessage(milliseconds) {
+            const totalSeconds = Math.floor(milliseconds / 1000);
+            const hours = Math.floor(totalSeconds / 3600);
+            const minutes = Math.floor((totalSeconds % 3600) / 60);
+            const seconds = totalSeconds % 60;
+
+            let message = "It took ";
+            
+            if (hours > 0) {
+                message += `${hours} hour${hours !== 1 ? 's' : ''}`;
+                if (minutes > 0 || seconds > 0) message += ", ";
+            }
+            
+            if (minutes > 0) {
+                message += `${minutes} minute${minutes !== 1 ? 's' : ''}`;
+                if (seconds > 0 && hours === 0) message += " and ";
+                else if (seconds > 0) message += ", and ";
+            }
+            
+            if (seconds > 0 || (hours === 0 && minutes === 0)) {
+                message += `${seconds} second${seconds !== 1 ? 's' : ''}`;
+            }
+            
+            message += "! 🍟";
+            return message;
+        }
+
+        function updateDisplay() {
+            if (isRunning) {
+                const currentTime = Date.now();
+                const currentElapsed = elapsedTime + (currentTime - startTime);
+                timeDisplay.textContent = formatTime(currentElapsed);
+            }
+        }
+
+        function startTimer() {
+            if (!isRunning) {
+                startTime = Date.now();
+                isRunning = true;
+                timerInterval = setInterval(updateDisplay, 100);
+                
+                playBtn.disabled = true;
+                pauseBtn.disabled = false;
+                stopBtn.disabled = false;
+                
+                status.textContent = 'Running';
+                status.className = 'status running';
+            }
+        }
+
+        function pauseTimer() {
+            if (isRunning) {
+                elapsedTime += Date.now() - startTime;
+                isRunning = false;
+                clearInterval(timerInterval);
+                
+                playBtn.disabled = false;
+                pauseBtn.disabled = true;
+                
+                status.textContent = 'Paused';
+                status.className = 'status paused';
+            }
+        }
+
+        function stopTimer() {
+            const finalTime = elapsedTime + (isRunning ? Date.now() - startTime : 0);
+            
+            isRunning = false;
+            elapsedTime = 0;
+            clearInterval(timerInterval);
+            
+            // Show results screen
+            timerScreen.style.display = 'none';
+            resultsScreen.style.display = 'block';
+            resultsTime.textContent = formatTimeMessage(finalTime);
+        }
+
+        function newTimer() {
+            // Reset timer state
+            timeDisplay.textContent = '00:00:00';
+            playBtn.disabled = false;
+            pauseBtn.disabled = true;
+            stopBtn.disabled = true;
+            status.textContent = 'Stopped';
+            status.className = 'status stopped';
+            
+            // Switch back to timer screen
+            resultsScreen.style.display = 'none';
+            timerScreen.style.display = 'block';
+        }
+
+        // Initialize the timer display
+        updateDisplay();
+    </script>
+</body>
+</html>
