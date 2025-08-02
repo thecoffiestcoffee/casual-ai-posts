@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hex Color Code Guide</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+        }
+
+        h2 {
+            color: #34495e;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+            margin-top: 40px;
+        }
+
+        .color-explanation {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 5px solid #3498db;
+        }
+
+        .color-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .color-card {
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            color: white;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        .color-card:hover {
+            transform: scale(1.05);
+        }
+
+        .color-code {
+            font-family: 'Courier New', monospace;
+            font-size: 1.1rem;
+            margin-top: 10px;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+
+        .breakdown {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            background: #ecf0f1;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            color: #2c3e50;
+        }
+
+        .breakdown-part {
+            text-align: center;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            min-width: 100px;
+        }
+
+        .breakdown-part h4 {
+            margin: 0 0 10px 0;
+            color: #e74c3c;
+        }
+
+        .breakdown-part h4:nth-child(1) { color: #e74c3c; }
+        .breakdown-part:nth-child(2) h4 { color: #27ae60; }
+        .breakdown-part:nth-child(3) h4 { color: #3498db; }
+
+        .converter {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin: 15px 0;
+            flex-wrap: wrap;
+        }
+
+        input[type="text"], input[type="color"], input[type="range"] {
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+        }
+
+        input[type="color"] {
+            width: 60px;
+            height: 40px;
+            cursor: pointer;
+        }
+
+        input[type="range"] {
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .preview-box {
+            width: 100px;
+            height: 60px;
+            border-radius: 5px;
+            border: 2px solid #ddd;
+            display: inline-block;
+        }
+
+        label {
+            font-weight: bold;
+            min-width: 60px;
+            display: inline-block;
+        }
+
+        .tips {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .tips h3 {
+            color: #856404;
+            margin-top: 0;
+        }
+
+        .code-example {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            margin: 10px 0;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Hex Color Code Reference Guide</h1>
+
+        <div class="color-explanation">
+            <h3>What is a Hex Color Code?</h3>
+            <p>A hex color code is a 6-digit code that represents colors in web design and programming. It starts with a # symbol followed by 6 characters (0-9 and A-F).</p>
+            
+            <div class="breakdown">
+                <div class="breakdown-part">
+                    <h4>Red</h4>
+                    <div style="font-family: monospace; font-size: 1.2rem;">#<span style="background: #ffcccc; padding: 2px 4px; border-radius: 3px;">34</span>98db</div>
+                    <p>First 2 digits<br>00-FF (0-255)</p>
+                </div>
+                <div class="breakdown-part">
+                    <h4>Green</h4>
+                    <div style="font-family: monospace; font-size: 1.2rem;">#34<span style="background: #ccffcc; padding: 2px 4px; border-radius: 3px;">98</span>db</div>
+                    <p>Middle 2 digits<br>00-FF (0-255)</p>
+                </div>
+                <div class="breakdown-part">
+                    <h4>Blue</h4>
+                    <div style="font-family: monospace; font-size: 1.2rem;">#3498<span style="background: #ccccff; padding: 2px 4px; border-radius: 3px;">db</span></div>
+                    <p>Last 2 digits<br>00-FF (0-255)</p>
+                </div>
+            </div>
+        </div>
+
+        <h2>Color Converter & Picker</h2>
+        <div class="converter">
+            <div class="input-group">
+                <label>Hex:</label>
+                <input type="text" id="hexInput" value="#3498db" placeholder="#3498db">
+                <input type="color" id="colorPicker" value="#3498db">
+                <div id="previewBox" class="preview-box" style="background-color: #3498db;"></div>
+            </div>
+            
+            <div class="input-group">
+                <label>Red:</label>
+                <input type="range" id="redSlider" min="0" max="255" value="52">
+                <span id="redValue">52</span>
+            </div>
+            
+            <div class="input-group">
+                <label>Green:</label>
+                <input type="range" id="greenSlider" min="0" max="255" value="152">
+                <span id="greenValue">152</span>
+            </div>
+            
+            <div class="input-group">
+                <label>Blue:</label>
+                <input type="range" id="blueSlider" min="0" max="255" value="219">
+                <span id="blueValue">219</span>
+            </div>
+        </div>
+
+        <h2>Popular Blue Shades (From Your Timer)</h2>
+        <div class="color-grid">
+            <div class="color-card" style="background-color: #2c3e50;" onclick="copyColor('#2c3e50')">
+                Dark Blue-Gray
+                <div class="color-code">#2c3e50</div>
+            </div>
+            <div class="color-card" style="background-color: #3498db;" onclick="copyColor('#3498db')">
+                Sky Blue
+                <div class="color-code">#3498db</div>
+            </div>
+            <div class="color-card" style="background-color: #5c6bc0;" onclick="copyColor('#5c6bc0')">
+                Indigo Blue
+                <div class="color-code">#5c6bc0</div>
+            </div>
+            <div class="color-card" style="background-color: #9b59b6;" onclick="copyColor('#9b59b6')">
+                Purple Blue
+                <div class="color-code">#9b59b6</div>
+            </div>
+            <div class="color-card" style="background-color: #64b5f6;" onclick="copyColor('#64b5f6')">
+                Light Blue
+                <div class="color-code">#64b5f6</div>
+            </div>
+            <div class="color-card" style="background-color: #87ceeb;" onclick="copyColor('#87ceeb')">
+                Sky Blue Light
+                <div class="color-code">#87ceeb</div>
+            </div>
+        </div>
+
+        <h2>Common Color Families</h2>
+        
+        <h3>Reds</h3>
+        <div class="color-grid">
+            <div class="color-card" style="background-color: #e74c3c;" onclick="copyColor('#e74c3c')">Red<div class="color-code">#e74c3c</div></div>
+            <div class="color-card" style="background-color: #c0392b;" onclick="copyColor('#c0392b')">Dark Red<div class="color-code">#c0392b</div></div>
+            <div class="color-card" style="background-color: #ff6b6b;" onclick="copyColor('#ff6b6b')">Light Red<div class="color-code">#ff6b6b</div></div>
+        </div>
+
+        <h3>Greens</h3>
+        <div class="color-grid">
+            <div class="color-card" style="background-color: #27ae60;" onclick="copyColor('#27ae60')">Green<div class="color-code">#27ae60</div></div>
+            <div class="color-card" style="background-color: #2ecc71;" onclick="copyColor('#2ecc71')">Light Green<div class="color-code">#2ecc71</div></div>
+            <div class="color-card" style="background-color: #1e8449;" onclick="copyColor('#1e8449')">Dark Green<div class="color-code">#1e8449</div></div>
+        </div>
+
+        <h3>Yellows/Oranges</h3>
+        <div class="color-grid">
+            <div class="color-card" style="background-color: #f39c12;" onclick="copyColor('#f39c12')">Orange<div class="color-code">#f39c12</div></div>
+            <div class="color-card" style="background-color: #e67e22;" onclick="copyColor('#e67e22')">Dark Orange<div class="color-code">#e67e22</div></div>
+            <div class="color-card" style="background-color: #f1c40f;" onclick="copyColor('#f1c40f')">Yellow<div class="color-code">#f1c40f</div></div>
+        </div>
+
+        <h2>How to Use Hex Colors</h2>
+        <div class="code-example">
+/* CSS */
+.my-element {
+    background-color: #3498db;
+    color: #ffffff;
+    border: 2px solid #2c3e50;
+}
+
+/* HTML style attribute */
+&lt;div style="background-color: #3498db;"&gt;Content&lt;/div&gt;
+
+# Python (tkinter)
+button.config(bg='#3498db', fg='#ffffff')
+        </div>
+
+        <div class="tips">
+            <h3>💡 Pro Tips</h3>
+            <ul>
+                <li><strong>Shorthand:</strong> #fff = #ffffff (white), #000 = #000000 (black)</li>
+                <li><strong>Transparency:</strong> Add 2 more digits for alpha: #3498dbff (fully opaque)</li>
+                <li><strong>Contrast:</strong> Use light colors on dark backgrounds and vice versa</li>
+                <li><strong>Accessibility:</strong> Ensure sufficient contrast for readability</li>
+                <li><strong>Tools:</strong> Use online color pickers, Adobe Color, or browser dev tools</li>
+            </ul>
+        </div>
+
+        <h2>Quick Reference</h2>
+        <div class="color-grid">
+            <div class="color-card" style="background-color: #ffffff; color: #333; border: 2px solid #ddd;" onclick="copyColor('#ffffff')">White<div class="color-code" style="color: #333;">#ffffff</div></div>
+            <div class="color-card" style="background-color: #000000;" onclick="copyColor('#000000')">Black<div class="color-code">#000000</div></div>
+            <div class="color-card" style="background-color: #808080;" onclick="copyColor('#808080')">Gray<div class="color-code">#808080</div></div>
+            <div class="color-card" style="background-color: #ff0000;" onclick="copyColor('#ff0000')">Pure Red<div class="color-code">#ff0000</div></div>
+            <div class="color-card" style="background-color: #00ff00;" onclick="copyColor('#00ff00')">Pure Green<div class="color-code">#00ff00</div></div>
+            <div class="color-card" style="background-color: #0000ff;" onclick="copyColor('#0000ff')">Pure Blue<div class="color-code">#0000ff</div></div>
+        </div>
+    </div>
+
+    <script>
+        const hexInput = document.getElementById('hexInput');
+        const colorPicker = document.getElementById('colorPicker');
+        const previewBox = document.getElementById('previewBox');
+        const redSlider = document.getElementById('redSlider');
+        const greenSlider = document.getElementById('greenSlider');
+        const blueSlider = document.getElementById('blueSlider');
+        const redValue = document.getElementById('redValue');
+        const greenValue = document.getElementById('greenValue');
+        const blueValue = document.getElementById('blueValue');
+
+        function hexToRgb(hex) {
+            const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+            return result ? {
+                r: parseInt(result[1], 16),
+                g: parseInt(result[2], 16),
+                b: parseInt(result[3], 16)
+            } : null;
+        }
+
+        function rgbToHex(r, g, b) {
+            return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+        }
+
+        function updateFromHex() {
+            const hex = hexInput.value;
+            const rgb = hexToRgb(hex);
+            if (rgb) {
+                colorPicker.value = hex;
+                previewBox.style.backgroundColor = hex;
+                redSlider.value = rgb.r;
+                greenSlider.value = rgb.g;
+                blueSlider.value = rgb.b;
+                redValue.textContent = rgb.r;
+                greenValue.textContent = rgb.g;
+                blueValue.textContent = rgb.b;
+            }
+        }
+
+        function updateFromRgb() {
+            const r = parseInt(redSlider.value);
+            const g = parseInt(greenSlider.value);
+            const b = parseInt(blueSlider.value);
+            const hex = rgbToHex(r, g, b);
+            
+            hexInput.value = hex;
+            colorPicker.value = hex;
+            previewBox.style.backgroundColor = hex;
+            redValue.textContent = r;
+            greenValue.textContent = g;
+            blueValue.textContent = b;
+        }
+
+        function updateFromPicker() {
+            const hex = colorPicker.value;
+            hexInput.value = hex;
+            updateFromHex();
+        }
+
+        function copyColor(color) {
+            navigator.clipboard.writeText(color).then(() => {
+                const originalText = event.target.textContent;
+                event.target.innerHTML = 'Copied! ✓';
+                setTimeout(() => {
+                    event.target.textContent = originalText;
+                }, 1000);
+            });
+        }
+
+        // Event listeners
+        hexInput.addEventListener('input', updateFromHex);
+        colorPicker.addEventListener('input', updateFromPicker);
+        redSlider.addEventListener('input', updateFromRgb);
+        greenSlider.addEventListener('input', updateFromRgb);
+        blueSlider.addEventListener('input', updateFromRgb);
+
+        // Initialize
+        updateFromHex();
+    </script>
+</body>
+</html>
